@@ -1,0 +1,28 @@
+#ifndef CIRCLECREATOR_H
+#define CIRCLECREATOR_H
+
+class PlanMasterController;
+#include <QObject>
+#include <QWebSocket>
+class CircleCreator: public QObject
+{
+    Q_OBJECT
+public:
+    CircleCreator(PlanMasterController* planMasterController, QObject* parent = nullptr);
+    Q_INVOKABLE void initial();
+    Q_PROPERTY(QString  name            MEMBER _name            CONSTANT)
+    Q_PROPERTY(QString  imageResource   MEMBER _imageResource   CONSTANT)
+
+private slots:
+    void onConnected();
+    void closeWebSocket()
+    {
+        m_socket->close(QWebSocketProtocol::CloseCodeNormal, "WebSocket closed");
+    }
+
+protected:
+    QString                 _name;
+    QString                 _imageResource;
+    QWebSocket              *m_socket;
+};
+#endif // CIRCLECREATOR_H
